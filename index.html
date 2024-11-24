@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Öz Türkçe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   
+    <input type="text" id="searchInput" placeholder="Rastgele 5 Türkçe Özü">
+    <div id="result"></div>
+
+    <script>
+        let wordList = {};
+    
+        // Kelime verilerini yükle
+        fetch('words.txt')
+            .then(response => response.text())
+            .then(data => {
+                const lines = data.split('\n');
+                lines.forEach(line => {
+                    const [key, value] = line.split(':');
+                    if (key && value) {
+                        wordList[key.trim()] = value.trim();
+                    }
+                });
+
+                // DOM yüklendiğinde rastgele 5 kelime göster
+                showRandomWords();
+            });
+    
+        const input = document.getElementById('searchInput');
+        const result = document.getElementById('result');
+    
+        input.addEventListener('input', () => {
+            const query = input.value.trim().toLowerCase();
+            result.innerHTML = ''; // Önceki sonuçları temizle
+    
+            if (query) {
+                const matches = Object.keys(wordList)
+                    .filter(key => key.includes(query)) // Eşleşmeleri bul
+                    .sort((a, b) => a.indexOf(query) - b.indexOf(query)) // En uygun sonuçları önce sıralar
+                    .slice(0, 5); // İlk 5 sonucu al
+    
+                if (matches.length > 0) {
+                    matches.forEach((match, index) => {
+                        // Sonuç
+                        const meaning = wordList[match];
+                        const matchHtml = `Yad kökenli <span style="color: #B5737E; font-weight: bold;">${match}</span> sözünün Öz Türkçedeki deŋi <span style="color: #B5737E; font-weight: bold;">${meaning}</span> idir.`;
+                        const div = document.createElement('div');
+                        div.innerHTML = matchHtml;
+                        div.style.marginBottom = '10px'; // Sonuçlar arasında boşluk ekle
+                        result.appendChild(div);
+    
+                        // Sadece son elemana separator eklemiyoruz
+                        if (index < matches.length - 1) {
+                            const separator = document.createElement('div');
+                            separator.textContent = '•••';
+                            separator.style.textAlign = 'center'; // Ortala
+                            separator.style.margin = '10px 0'; // Yukarı ve aşağı boşluk ekle
+                            separator.style.color = '#f0f0f0'; // Separator rengi
+                            result.appendChild(separator);
+                        }
+                    });
+                } else {
+                    result.textContent = 'seni seviyorum mahiyet <3';
+                }
+            } else {
+                // Arama kutusu boşsa rastgele kelimeler göster
+                showRandomWords();
+            }
+        });
+
+        // Rastgele 5 kelime gösteren fonksiyon
+        function showRandomWords() {
+            result.innerHTML = ''; // Önceki sonuçları temizle
+            const keys = Object.keys(wordList);
+            const randomWords = keys
+                .sort(() => Math.random() - 0.5) // Karıştır
+                .slice(0, 5); // İlk 5 elemanı al
+    
+            randomWords.forEach((randomKey, index) => {
+                const meaning = wordList[randomKey];
+                const matchHtml = `Yad kökenli <span style="color: #B5737E; font-weight: bold;">${randomKey}</span> sözünün Öz Türkçedeki deŋi <span style="color: #B5737E; font-weight: bold;">${meaning}</span> idir.`;
+                const div = document.createElement('div');
+                div.innerHTML = matchHtml;
+                div.style.marginBottom = '10px'; // Sonuçlar arasında boşluk ekle
+                result.appendChild(div);
+    
+                // Sadece son elemana separator eklemiyoruz
+                if (index < randomWords.length - 1) {
+                    const separator = document.createElement('div');
+                    separator.textContent = '•••';
+                    separator.style.textAlign = 'center'; // Ortala
+                    separator.style.margin = '10px 0'; // Yukarı ve aşağı boşluk ekle
+                    separator.style.color = '#f0f0f0'; // Separator rengi
+                    result.appendChild(separator);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

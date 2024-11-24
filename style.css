@@ -1,0 +1,52 @@
+@font-face {
+  font-family: 'Poppins';
+  src: url('poppins.woff2');
+  font-weight: 400;
+}
+
+body {
+  background-color: #151515;
+  font-family: Poppins;
+  display: flex; /* Flexbox sistemi ile hizalama */
+  flex-direction: column; /* Öğeleri dikeyde hizalar */
+  align-items: center; /* Yatayda ortalar */
+
+  height: 100vh; /* Sayfa yüksekliğini kaplar */
+  margin: 0;
+}
+
+
+
+
+input {
+  width: 320px;
+  padding: 10px 0;
+  font-size: 17px;
+  background: linear-gradient(to bottom, #421924, #682639); /* Dikey gradient */
+  border: transparent;
+  color: rgb(255, 255, 255); /* Input yazı rengini beyaz yapar */
+  outline: none;
+  border-radius: 0 0 10px 10px; /* Alt kenarlara kavis ekler */
+  padding-left: 15px;
+  padding-right: 15px;
+  
+}
+input:focus{
+  box-shadow: 0 8px 16px rgb(0, 0, 0); /* Daha yoğun gölge ekler */
+}
+input::placeholder {
+  color: #f0f0f0; /* Placeholder yazı rengini beyaz yapar */
+  text-align: center;
+  
+  
+}
+input:focus::placeholder {
+  color: transparent; /* Placeholder'ı görünmez yapar */
+}
+#result {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #f0f0f0;
+  width: 320px;
+  text-align: center; /* Metni yatay olarak ortalar */
+}
